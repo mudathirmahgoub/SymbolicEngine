@@ -36,6 +36,45 @@ public class Visitor  extends CBaseVisitor<CNode>
     }
 
     @Override
+    public CNode visitFunctionDefinition(CParser.FunctionDefinitionContext ctx)
+    {
+        String type = ctx.type().getText();
+        String name = ctx.Identifier().getText();
+        Block block = (Block) this.visitBlock(ctx.block());
+        return new Function(type, name, block);
+    }
+
+    @Override
+    public CNode visitBlock(CParser.BlockContext ctx)
+    {
+        Block block = new Block();
+        for (CParser.StatementContext context: ctx.statement())
+        {
+            Statement statement = (Statement) this.visitStatement(context);
+            block.statements.add(statement);
+        }
+        return block;
+    }
+
+    @Override
+    public CNode visitStatement(CParser.StatementContext ctx)
+    {
+        if (ctx.block() != null)
+        {
+            return this.visitBlock(ctx.block());
+        }
+        if(ctx.variableDefinition() != null)
+        {
+            throw new UnsupportedOperationException();
+        }
+        if(ctx.functionCall() != null)
+        {
+            return this.visitFunctionCall(ctx.functionCall());
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public CNode visitExpression(CParser.ExpressionContext ctx)
     {
         if (ctx.BooleanConstant() != null)
@@ -60,10 +99,12 @@ public class Visitor  extends CBaseVisitor<CNode>
         String functionName = ctx.Identifier().getText();
         if(functionName.equals("assert"))
         {
-            LogicalExpression expression = (LogicalExpression) this.visitArgumentExpressions(ctx.argumentExpressions());
+            // there should be exactly one expression
+            Expression expression = (Expression) this.visitExpression(ctx.expression(0));
             return new Assert(expression);
         }
 
         throw new UnsupportedOperationException();
     }
+
 }

@@ -48,10 +48,7 @@ expression
             | '(' expression ')'
             ;
 
-functionCall : Identifier '(' argumentExpressions? ')';
-
-argumentExpressions : expression (',' expression)*;
-
+functionCall : Identifier '(' (expression (',' expression)*)? ')';
 
 
 BooleanConstant : 'true' | 'false';

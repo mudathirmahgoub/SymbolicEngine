@@ -70,10 +70,4 @@ public interface CVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionCall(CParser.FunctionCallContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CParser#argumentExpressions}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArgumentExpressions(CParser.ArgumentExpressionsContext ctx);
 }
