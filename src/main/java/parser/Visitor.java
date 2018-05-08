@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.antlr.CBaseVisitor;
+import parser.antlr.CLexer;
 import parser.antlr.CParser;
 import parser.antlr.CVisitor;
 import parser.syntaxtree.*;
@@ -16,47 +17,53 @@ import java.util.List;
 public class Visitor  extends CBaseVisitor<CNode>
 {
     @Override
-    public CNode visitPostfixExpression(CParser.PostfixExpressionContext ctx)
+    public CNode visitProgram(CParser.ProgramContext ctx)
     {
-        // determine the type of the expression
-        if(ctx.children.size() <= 1)
+        Program program = new Program();
+
+        for (CParser.FunctionDefinitionContext context:   ctx.functionDefinition())
         {
-            //ToDo: remove this line
-            System.out.println(ctx.getText());
-            return super.visitPostfixExpression(ctx);
+            Function function = (Function) this.visitFunctionDefinition(context);
+            program.functions.add(function);
         }
 
-        // get the second child
-        ParseTree secondChild =  ctx.children.get(1);
-        // check if the expression is a function call
-        if(secondChild instanceof  TerminalNode && secondChild.getText().equals("("))
+        for (CParser.VariableDefinitionContext context:   ctx.variableDefinition())
         {
-            // get the name of the function
-
-            String functionName = ctx.children.get(0).getText();
-            if(functionName.equals("assert"))
-            {
-                LogicalExpression expression = (LogicalExpression)
-                        this.visitArgumentExpressionList(ctx.argumentExpressionList());
-                return new Assert(expression);
-            }
             throw new UnsupportedOperationException();
         }
+
+        return program;
+    }
+
+    @Override
+    public CNode visitExpression(CParser.ExpressionContext ctx)
+    {
+        if (ctx.BooleanConstant() != null)
+        {
+            boolean value = ctx.getText().equals("true");
+            return new BooleanConstant(value);
+        }
+
+        if(ctx.functionCall() != null)
+        {
+            // determine if it is an assertion
+            return this.visitFunctionCall(ctx.functionCall());
+        }
+
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public CNode visitChildren(RuleNode ruleNode) {
-
-        int n = ruleNode.getChildCount();
-
-        if(n == 1)
+    public CNode visitFunctionCall(CParser.FunctionCallContext ctx)
+    {
+        // determine if is an assertion
+        String functionName = ctx.Identifier().getText();
+        if(functionName.equals("assert"))
         {
-            ParseTree c = ruleNode.getChild(0);
-            CNode childResult = c.accept(this);
-            return childResult;
+            LogicalExpression expression = (LogicalExpression) this.visitArgumentExpressions(ctx.argumentExpressions());
+            return new Assert(expression);
         }
 
-        return super.visitChildren(ruleNode);
+        throw new UnsupportedOperationException();
     }
 }

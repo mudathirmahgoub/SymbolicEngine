@@ -35,7 +35,7 @@ public class SymbolicEngine
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         CParser parser = new CParser(tokenStream);
 
-        ParseTree tree =  parser.compilationUnit();
+        ParseTree tree =  parser.program();
         Visitor visitor = new Visitor();
         this.program = (Program) visitor.visit(tree);
     }
