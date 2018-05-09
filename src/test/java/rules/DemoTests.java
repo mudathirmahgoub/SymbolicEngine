@@ -21,7 +21,7 @@ public class DemoTests
     {
         String code = "void f () { assert (true);}";
         SymbolicEngine engine = new SymbolicEngine(code);
-        Result result= engine.check();
+        Result result= engine.verify();
         assertEquals(Answer.Yes, result.answer);
     }
 }

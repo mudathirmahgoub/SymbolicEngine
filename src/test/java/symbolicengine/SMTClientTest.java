@@ -47,7 +47,7 @@ class SMTClientTest {
         SMTClient client = new SMTClient();
         client.connect();
         client.sendCommand("(assert true)");
-        client.sendCommand("(check-sat)");
+        client.sendCommand("(verify-sat)");
         String output = client.getOutput();
         assertEquals("sat", output);
     }

@@ -1,5 +1,8 @@
 package parser.syntaxtree;
 
-public class Expression extends CNode
+import java.util.List;
+
+public abstract class Expression extends CNode
 {
+
 }

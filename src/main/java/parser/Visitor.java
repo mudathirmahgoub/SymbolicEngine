@@ -1,18 +1,8 @@
 package parser;
 
-import org.antlr.v4.runtime.tree.ErrorNode;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.antlr.CBaseVisitor;
-import parser.antlr.CLexer;
 import parser.antlr.CParser;
-import parser.antlr.CVisitor;
 import parser.syntaxtree.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Visitor  extends CBaseVisitor<CNode>
 {
@@ -40,17 +30,30 @@ public class Visitor  extends CBaseVisitor<CNode>
     {
         String type = ctx.type().getText();
         String name = ctx.Identifier().getText();
+
         Block block = (Block) this.visitBlock(ctx.block());
-        return new Function(type, name, block);
+        Function function = new Function(type, name, block);
+        block.parent = function;
+        return function;
     }
 
     @Override
     public CNode visitBlock(CParser.BlockContext ctx)
     {
         Block block = new Block();
-        for (CParser.StatementContext context: ctx.statement())
+        for (int i = 0; i < ctx.statement().size(); i++)
         {
-            Statement statement = (Statement) this.visitStatement(context);
+            Statement statement = (Statement) this.visitStatement(ctx.statement(i));
+            if(i == 0)
+            {
+                // the parent of the previous statement is the
+                statement.parent = block;
+            }
+            else
+            {
+                // the parent of each statement is the previous statement
+                statement.parent = block.statements.get(i - 1);
+            }
             block.statements.add(statement);
         }
         return block;
@@ -101,7 +104,7 @@ public class Visitor  extends CBaseVisitor<CNode>
         {
             // there should be exactly one expression
             Expression expression = (Expression) this.visitExpression(ctx.expression(0));
-            return new Assert(expression);
+            return new Assertion(expression);
         }
 
         throw new UnsupportedOperationException();

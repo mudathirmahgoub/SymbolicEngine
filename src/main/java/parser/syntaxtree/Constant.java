@@ -1,5 +1,5 @@
 package parser.syntaxtree;
 
-public class Constant extends Expression
+public abstract class Constant extends Expression
 {
 }

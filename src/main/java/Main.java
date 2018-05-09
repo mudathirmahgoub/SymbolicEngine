@@ -24,7 +24,7 @@ public class Main
                 String inputFile  = command.getOptionValue("i");
                 File file = new File(inputFile);
                 SymbolicEngine symbolicEngine = new SymbolicEngine(file);
-                Result result = symbolicEngine.check();
+                Result result = symbolicEngine.verify();
 
                 System.out.println(result);
 
