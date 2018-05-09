@@ -5,4 +5,5 @@ import java.util.List;
 public abstract class Expression extends CNode
 {
 
+    public abstract boolean isBoolean();
 }

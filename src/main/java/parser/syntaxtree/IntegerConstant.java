@@ -3,10 +3,10 @@ package parser.syntaxtree;
 import java.util.Arrays;
 import java.util.List;
 
-public class BooleanConstant extends  Constant
+public class IntegerConstant extends Constant
 {
-    boolean value;
-    public BooleanConstant(boolean value)
+    int value;
+    public IntegerConstant(int value)
     {
         this.value = value;
     }
@@ -26,6 +26,6 @@ public class BooleanConstant extends  Constant
     @Override
     public boolean isBoolean()
     {
-        return true;
+        return false;
     }
 }

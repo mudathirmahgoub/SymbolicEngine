@@ -22,8 +22,16 @@ public class Assertion extends Statement
 
     public List<String> getFormulas()
     {
+        String assertionFormula = "";
         // the expression should not be empty
-        String assertionFormula = expression.getFormulas().get(0);
+        if(expression.isBoolean())
+        {
+            assertionFormula = expression.getFormulas().get(0);
+        }
+        else
+        {
+            assertionFormula = "(> " + expression.getFormulas().get(0) + " 0 )";
+        }
 
         //ToDo:  if the assertion is the first statement in a block
 

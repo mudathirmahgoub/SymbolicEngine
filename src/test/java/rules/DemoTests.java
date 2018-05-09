@@ -45,4 +45,15 @@ public class DemoTests
         assertEquals(Answer.No, result.isValid);
         assertEquals(0, result.counterExample.size());
     }
+
+    @Test()
+    void simplestTest4()
+    {
+        String code = "void f () { assert (5);}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.Yes, result.isValid);
+        assertEquals(0, result.counterExample.size());
+    }
+
 }

@@ -46,24 +46,24 @@ public class SymbolicEngine
     {
         program.execute(null);
 
-        String smtLib = "";
+        String smtCommand = "";
 
         for (Function function: program.functions)
         {
             for (Assertion assertion :function.assertions)
             {
                 List<String> formulas = assertion.getFormulas();
-                smtLib = String.join("\n", formulas);
+                smtCommand = String.join("\n", formulas);
             }
         }
 
-        smtLib += "\n(check-sat)";
+        smtCommand += "\n(check-sat)";
 
         SMTClient client = new SMTClient();
         try
         {
             client.connect();
-            client.sendCommand(smtLib);
+            client.sendCommand(smtCommand);
             String isSatisfiable = client.getOutput();
             if(isSatisfiable.equals("unsat"))
             {
