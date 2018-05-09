@@ -68,7 +68,14 @@ public class SymbolicEngine
             if(isSatisfiable.equals("unsat"))
             {
                 Result result = new Result();
-                result.answer = Answer.Yes;
+                result.isValid = Answer.Yes;
+                return result;
+            }
+
+            if(isSatisfiable.equals("sat"))
+            {
+                Result result = new Result();
+                result.isValid = Answer.No;
                 return result;
             }
         }
