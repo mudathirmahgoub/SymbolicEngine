@@ -86,6 +86,12 @@ public class Visitor  extends CBaseVisitor<CNode>
             return new BooleanConstant(value);
         }
 
+        if (ctx.Integer() != null)
+        {
+            int value = Integer.parseInt(ctx.Integer().getText());
+            return new IntegerConstant(value);
+        }
+
         if(ctx.functionCall() != null)
         {
             // determine if it is an assertion
