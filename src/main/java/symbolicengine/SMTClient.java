@@ -30,6 +30,7 @@ public class SMTClient
 
     public String getOutput() throws IOException
     {
+        this.sendCommand("assert(true)");
         String line = scanner.nextLine();
         return line;
     }
