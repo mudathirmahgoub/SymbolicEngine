@@ -1,9 +1,8 @@
 package parser.syntaxtree;
 
-import symbolicengine.State;
+import symbolicengine.StatePath;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,21 +41,15 @@ public class Function extends CNode
     public void execute(Function function, CNode parent)
     {
         this.parent = parent;
-        State state  = new State();
+        StatePath statePath = new StatePath();
         for (Map.Entry<String, String> entry: function.arguments.arguments.entrySet())
         {
             String variableName = entry.getKey();
             String symbolicValue = CNode.getSymbolValue();
-            state.symbolTable.put(variableName, symbolicValue);
+            statePath.symbolTable.put(variableName, symbolicValue);
         }
-        this.states.add(state);
+        this.statePaths.add(statePath);
 
         block.execute(this, this);
-    }
-
-    @Override
-    protected List<String> getFormulas()
-    {
-        throw new UnsupportedOperationException();
     }
 }

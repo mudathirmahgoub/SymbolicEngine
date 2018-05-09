@@ -16,9 +16,4 @@ public class FunctionCall extends Statement
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected List<String> getFormulas()
-    {
-        throw new UnsupportedOperationException();
-    }
 }

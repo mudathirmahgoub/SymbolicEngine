@@ -31,15 +31,4 @@ public class Block extends CNode
         return parent.getType(variableName);
     }
 
-    @Override
-    protected List<String> getFormulas()
-    {
-        List<String> formulas = new ArrayList<>();
-        for (Statement statement : statements)
-        {
-            List<String> statementFormulas =  statement.getFormulas();
-            formulas.addAll(statementFormulas);
-        }
-        return formulas;
-    }
 }

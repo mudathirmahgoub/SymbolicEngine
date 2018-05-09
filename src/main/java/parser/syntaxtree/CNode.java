@@ -1,14 +1,14 @@
 package parser.syntaxtree;
 
-import symbolicengine.Formula;
-import symbolicengine.State;
+import symbolicengine.StatePath;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 abstract public class CNode
 {
-    public List<State> states = new ArrayList<>();
+    public List<StatePath> statePaths = new ArrayList<>();
     public CNode parent;
     public abstract void execute(Function function, CNode parent);
     public static int symbolicIndex = 0;
@@ -18,8 +18,6 @@ abstract public class CNode
         symbolicIndex ++;
         return "_x" + symbolicIndex;
     }
-
-    protected abstract List<String> getFormulas();
 
     protected abstract String getType(String variableName);
 }

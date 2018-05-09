@@ -18,9 +18,9 @@ public class IntegerConstant extends Constant
     }
 
     @Override
-    protected List<String> getFormulas()
+    public String evaluate()
     {
-        return Arrays.asList("" + value);
+        return "" + value;
     }
 
     @Override

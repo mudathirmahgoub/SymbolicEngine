@@ -21,8 +21,4 @@ public class Arguments extends  CNode
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected List<String> getFormulas() {
-        return new ArrayList<>();
-    }
 }

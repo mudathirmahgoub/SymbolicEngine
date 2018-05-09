@@ -52,7 +52,7 @@ public class SymbolicEngine
         {
             for (Assertion assertion :function.assertions)
             {
-                List<String> formulas = assertion.getFormulas();
+                List<String> formulas = assertion.evaluate();
                 smtCommand = String.join("\n", formulas);
             }
         }

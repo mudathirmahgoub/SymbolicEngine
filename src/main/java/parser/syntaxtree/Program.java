@@ -25,9 +25,4 @@ public class Program extends  CNode
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected List<String> getFormulas()
-    {
-        throw new UnsupportedOperationException();
-    }
 }
