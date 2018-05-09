@@ -8,12 +8,27 @@ public class Block extends CNode
     public List<Statement> statements = new ArrayList<>();
 
     @Override
-    public void execute(Function function)
+    public void execute(Function function, CNode parent)
     {
-        for (Statement statement : statements)
+        this.parent = parent;
+
+        for(int i = 0 ; i < statements.size(); i++)
         {
-            statement.execute(function);
+            if(i == 0)
+            {
+                statements.get(i).execute(function, this);
+            }
+            else
+            {
+                statements.get(i).execute(function, statements.get(i-1));
+            }
         }
+    }
+
+    @Override
+    protected String getType(String variableName)
+    {
+        return parent.getType(variableName);
     }
 
     @Override

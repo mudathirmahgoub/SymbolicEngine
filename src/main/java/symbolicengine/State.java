@@ -5,5 +5,5 @@ import java.util.Map;
 
 public class State
 {
-    Map<String, String> state = new HashMap<>();
+    public  Map<String, String> symbolTable = new HashMap<>();
 }

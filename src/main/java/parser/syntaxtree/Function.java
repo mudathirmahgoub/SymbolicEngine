@@ -1,5 +1,7 @@
 package parser.syntaxtree;
 
+import symbolicengine.State;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,21 +15,43 @@ public class Function extends CNode
 
     public Block block;
 
+    public Arguments arguments;
+
     public List<Assertion> assertions = new ArrayList<>();
 
-    public Function(String type, String name, Block block)
+    public Function(String type, String name, Arguments arguments, Block block)
     {
         this.type = type;
         this.name = name;
+        this.arguments = arguments;
         this.block = block;
     }
 
     @Override
-    public void execute(Function function)
+    protected String getType(String variableName)
     {
-        //ToDo: assign a new symbolic value for each argument
+        if(arguments.arguments.containsKey(variableName))
+        {
+            return arguments.arguments.get(variableName);
+        }
 
-        block.execute(this);
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void execute(Function function, CNode parent)
+    {
+        this.parent = parent;
+        State state  = new State();
+        for (Map.Entry<String, String> entry: function.arguments.arguments.entrySet())
+        {
+            String variableName = entry.getKey();
+            String symbolicValue = CNode.getSymbolValue();
+            state.symbolTable.put(variableName, symbolicValue);
+        }
+        this.states.add(state);
+
+        block.execute(this, this);
     }
 
     @Override

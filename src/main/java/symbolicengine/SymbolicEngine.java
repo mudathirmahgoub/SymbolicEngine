@@ -44,7 +44,7 @@ public class SymbolicEngine
 
     public Result verify()
     {
-        program.execute(null);
+        program.execute(null, null);
 
         String smtCommand = "";
 

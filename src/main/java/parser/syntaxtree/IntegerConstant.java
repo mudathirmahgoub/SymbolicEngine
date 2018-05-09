@@ -12,15 +12,21 @@ public class IntegerConstant extends Constant
     }
 
     @Override
-    public void execute(Function function)
+    public void execute(Function function, CNode parent)
     {
-        // Nothing to be done here
+        this.parent = parent;
     }
 
     @Override
     protected List<String> getFormulas()
     {
         return Arrays.asList("" + value);
+    }
+
+    @Override
+    protected String getType(String variableName)
+    {
+        throw new UnsupportedOperationException();
     }
 
     @Override

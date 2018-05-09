@@ -30,11 +30,27 @@ public class Visitor  extends CBaseVisitor<CNode>
     {
         String type = ctx.type().getText();
         String name = ctx.Identifier().getText();
-
+        Arguments arguments = (Arguments) this.visitArguments(ctx.arguments());
         Block block = (Block) this.visitBlock(ctx.block());
-        Function function = new Function(type, name, block);
+
+        Function function = new Function(type, name, arguments, block);
         block.parent = function;
         return function;
+    }
+
+    @Override
+    public CNode visitArguments(CParser.ArgumentsContext ctx)
+    {
+        Arguments arguments = new Arguments();
+        if(ctx != null)
+        {
+            for (CParser.ArgumentContext context : ctx.argument())
+            {
+                arguments.arguments.put(context.Identifier().getText(),
+                        context.type().getText());
+            }
+        }
+        return arguments;
     }
 
     @Override
@@ -80,6 +96,12 @@ public class Visitor  extends CBaseVisitor<CNode>
     @Override
     public CNode visitExpression(CParser.ExpressionContext ctx)
     {
+
+        if(ctx.Identifier() != null)
+        {
+            return new Variable(ctx.Identifier().getText());
+        }
+
         if (ctx.BooleanConstant() != null)
         {
             boolean value = ctx.getText().equals("true");
@@ -98,7 +120,7 @@ public class Visitor  extends CBaseVisitor<CNode>
             return this.visitFunctionCall(ctx.functionCall());
         }
 
-        if(ctx.expression() != null)
+        if(ctx.expression().size() > 0)
         {
             //unary expression
             if(ctx.expression().size() == 1)

@@ -8,9 +8,9 @@ import java.util.List;
 
 abstract public class CNode
 {
-    public List<State> endStates = new ArrayList<>();
+    public List<State> states = new ArrayList<>();
     public CNode parent;
-    public abstract void execute(Function function);
+    public abstract void execute(Function function, CNode parent);
     public static int symbolicIndex = 0;
 
     public static String getSymbolValue()
@@ -20,4 +20,6 @@ abstract public class CNode
     }
 
     protected abstract List<String> getFormulas();
+
+    protected abstract String getType(String variableName);
 }
