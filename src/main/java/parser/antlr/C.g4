@@ -41,6 +41,7 @@ expression
             | expression '>=' expression
             | expression '<' expression
             | expression '<=' expression
+            | expression '!=' expression
             | expression '==' expression
             | Identifier
             | Integer

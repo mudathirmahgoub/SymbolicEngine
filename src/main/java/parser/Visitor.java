@@ -98,6 +98,19 @@ public class Visitor  extends CBaseVisitor<CNode>
             return this.visitFunctionCall(ctx.functionCall());
         }
 
+        if(ctx.expression() != null)
+        {
+            //unary expression
+            if(ctx.expression().size() == 1)
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            String operator = ctx.getChild(1).getText();
+            Expression left = (Expression) this.visitExpression(ctx.expression(0));
+            Expression right = (Expression) this.visitExpression(ctx.expression(1));
+            return new BinaryExpression(operator, left, right);
+        }
         throw new UnsupportedOperationException();
     }
 
