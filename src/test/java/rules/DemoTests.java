@@ -314,4 +314,28 @@ public class DemoTests
         assertEquals(Answer.No, result.isValid);
         assertEquals("{x=1, y=1}", result.counterExample.toString());
     }
+
+    /**********************************************************/
+    @Test()
+    void ifTest1() throws IOException
+    {
+        String code = "void f (int x, int y) { if(x > 0) y = x;  assert (y == x);}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.No, result.isValid);
+        assertEquals("{x=0, y=1}", result.counterExample.toString());
+    }
+
+    @Test()
+    void ifTest2() throws IOException
+    {
+        String code = "void f (int x, int y) {" +
+                    "if(x > 0) y = x " +
+                    "else y = x;  " +
+                    "assert (y == x);" +
+                "}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.Yes, result.isValid);
+    }
 }

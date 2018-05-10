@@ -1,8 +1,11 @@
 package cparser;
 
 import cparser.antlr.CBaseVisitor;
+import cparser.antlr.CLexer;
 import cparser.antlr.CParser;
 import cparser.syntaxtree.*;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.Token;
 
 public class CVisitor extends CBaseVisitor<CNode>
 {
@@ -98,6 +101,30 @@ public class CVisitor extends CBaseVisitor<CNode>
         if(ctx.functionCall() != null)
         {
             return this.visitFunctionCall(ctx.functionCall());
+        }
+
+        if(ctx.getChild(0) instanceof TerminalNode)
+        {
+            Token symbol = ((TerminalNode) ctx.getChild(0)).getSymbol();
+            // if statement
+            if(symbol.getType() == CLexer.If)
+            {
+                Expression condition = (Expression) visitExpression(ctx.expression());
+                Statement trueStatement = (Statement) visitStatement(ctx.statement(0));
+                IfStatement ifStatement = new IfStatement(condition, trueStatement);
+                // else statement
+                if(ctx.statement().size() > 1)
+                {
+                    Statement falseStatement = (Statement)
+                            visitStatement(ctx.statement(0));
+                    ifStatement.falseStatement = falseStatement;
+                }
+                else
+                {
+                    ifStatement.falseStatement = new NoOperation();
+                }
+                return ifStatement;
+            }
         }
         throw new UnsupportedOperationException();
     }
