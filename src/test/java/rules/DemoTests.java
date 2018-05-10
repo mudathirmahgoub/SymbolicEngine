@@ -335,6 +335,15 @@ public class DemoTests
         assertEquals("{x=1, y=1}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
     }
 
+    @Test()
+    void simpleTestWithVariableDefinition3() throws IOException
+    {
+        String code = "void f (int x, int y) { int z = - x * x;  assert (z <= 0);}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.Yes, result.isValid);
+    }
+
     /**********************************************************/
     @Test()
     void ifTest1() throws IOException
