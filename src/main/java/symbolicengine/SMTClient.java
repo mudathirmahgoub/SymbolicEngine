@@ -13,7 +13,7 @@ public class SMTClient
     public void connect() throws IOException
     {
 
-        String command = "src/resources/z3.exe -in";
+        String command = "z3.exe -in";
 
         Runtime runtime = Runtime.getRuntime();
         process = runtime.exec(command);

@@ -11,4 +11,10 @@ public class Result
     {
         this.isValid = answer;
     }
+
+    @Override
+    public String toString()
+    {
+        return isValid.toString() + "\n" + counterExample.toString();
+    }
 }

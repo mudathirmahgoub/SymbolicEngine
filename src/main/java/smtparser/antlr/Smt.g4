@@ -8,7 +8,7 @@ definitions : '(' 'define-fun' variable '(' ')' type  value ')';
 
 variable : Identifier;
 
-type : 'Int' | 'Bool';
+type : 'Int' | 'Bool' ;
 
 value: Integer |  '(' '-' Integer ')';
 
