@@ -1,0 +1,1 @@
+java -jar antlr-4.7.1-complete.jar Smt.g4 -CVisitor -package smtparser.antlr
