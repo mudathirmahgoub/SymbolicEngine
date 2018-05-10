@@ -38,7 +38,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -48,7 +48,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -58,7 +58,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
 
@@ -69,7 +69,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -79,7 +79,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -89,7 +89,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -99,7 +99,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -109,7 +109,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -119,7 +119,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -129,7 +129,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -139,7 +139,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
 
@@ -150,7 +150,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -160,7 +160,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
 
@@ -171,7 +171,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -181,7 +181,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     /**************************************************************************/
@@ -193,8 +193,8 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals(1, result.counterExample.size());
-        assertEquals("{x=0}", result.counterExample.toString());
+        assertEquals(1, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
+        assertEquals("{x=0}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
     }
 
     @Test()
@@ -204,8 +204,8 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals(2, result.counterExample.size());
-        assertEquals("{x=-1, y=0}", result.counterExample.toString());
+        assertEquals(2, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
+        assertEquals("{x=-1, y=0}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
     }
 
     @Test()
@@ -252,7 +252,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(0, result.assertions.get(0).assertionFormulas.get(0).counterExample.size());
     }
 
     @Test()
@@ -271,7 +271,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals("{x=-6}", result.counterExample.toString());
+        assertEquals("{x=-6}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
     }
 
     @Test()
@@ -281,7 +281,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals("{x=-6, y=0}", result.counterExample.toString());
+        assertEquals("{x=-6, y=0}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
     }
 
     @Test()
@@ -291,7 +291,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals("{x=1, y=1}", result.counterExample.toString());
+        assertEquals("{x=1, y=1}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
     }
 
     /**********************************************************/
@@ -303,7 +303,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals("{x=5}", result.counterExample.toString());
+        assertEquals("{x=5}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
     }
 
     @Test()
@@ -332,7 +332,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals("{x=1, y=1}", result.counterExample.toString());
+        assertEquals("{x=1, y=1}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
     }
 
     /**********************************************************/
@@ -343,7 +343,7 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals("{x=0, y=1}", result.counterExample.toString());
+        assertEquals("{x=0, y=1}", result.assertions.get(0).assertionFormulas.get(1).counterExample.toString());
     }
 
     @Test()

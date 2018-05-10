@@ -49,83 +49,113 @@ public class SymbolicEngine
         this.program = (Program) CVisitor.visit(tree);
     }
 
-    public Result verify() throws IOException {
+    public Result verify() throws IOException
+    {
         program.execute(null, null);
 
+        Result result = new Result();
+        result.isValid = Answer.Yes;
         for (Function function: program.functions)
         {
             for (Assertion assertion :function.assertions)
             {
-                for(String formula : assertion.assertionFormulas)
+                Answer areAllFormulasValid = Answer.Yes;
+                for(AssertionFormula assertionFormula : assertion.assertionFormulas)
                 {
-                    String smtCommand = declareVariables();
-                    smtCommand += formula + "\n(check-sat)";
-
-                    if(debug)
+                    verifyFormula(function, assertionFormula);
+                    if(assertionFormula.isValid == Answer.No)
                     {
-                        System.out.println(smtCommand);
+                        areAllFormulasValid = Answer.No;
                     }
-
-                    //ToDO: clear the previous formula
-                    SMTClient client = new SMTClient();
-                    try
+                    else if(assertionFormula.isValid == Answer.Unknown &&
+                            areAllFormulasValid == Answer.Yes)
                     {
-                        client.connect();
-                        client.sendCommand(smtCommand);
-                        String smtResult = client.getOutput();
-                        if(smtResult.equals("unsat"))
-                        {
-                            continue;
-                        }
-                        else if(smtResult.equals("sat"))
-                        {
-                            // get a model
-                            client.sendCommand("\n(get-model)");
-                            String modelString = client.getOutput();
-
-                            if(debug)
-                            {
-                                System.out.println(modelString);
-                            }
-                            Result result = new Result(Answer.No);
-
-                            Map<String, String>  model = getSmtModel(modelString);
-
-                            Map<String, String> counterExample = new HashMap<>();
-
-                            if(model.size() > 0)
-                            {
-                                for (Map.Entry<String, String> entry :
-                                        function.startStates.get(0).symbolTable.entrySet())
-                                {
-                                    String variableName = entry.getKey();
-                                    String symbolicValue = entry.getValue();
-                                    String value = model.get(symbolicValue);
-                                    counterExample.put(variableName, value);
-                                }
-                            }
-                            result.counterExample = counterExample;
-                            return result;
-                        }
-                        else
-                        {
-                            if(debug)
-                            {
-                                System.out.println(smtResult);
-                            }
-                            return new Result(Answer.Unknown);
-                        }
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                        throw e;
+                        areAllFormulasValid = Answer.Unknown;
                     }
                 }
-            }
 
+                if(areAllFormulasValid == Answer.No)
+                {
+                    result.isValid = Answer.No;
+                }
+                else if(areAllFormulasValid == Answer.Unknown &&
+                        result.isValid == Answer.Yes)
+                {
+                    result.isValid = Answer.Unknown;
+                }
+            }
+            result.assertions.addAll(function.assertions);
         }
-        return new Result(Answer.Yes);
+        return result;
+    }
+
+    private void verifyFormula(Function function, AssertionFormula assertionFormula)
+            throws IOException
+    {
+        String smtCommand = declareVariables();
+        smtCommand += assertionFormula.formula + "\n(check-sat)";
+
+        if(debug)
+        {
+            System.out.println("\n******************************\n");
+            System.out.println(smtCommand);
+        }
+
+        //ToDO: clear the previous formula
+        SMTClient client = new SMTClient();
+        try
+        {
+            client.connect();
+            client.sendCommand(smtCommand);
+            String smtResult = client.getOutput();
+            if(smtResult.equals("unsat"))
+            {
+                assertionFormula.isValid = Answer.Yes;
+                return;
+            }
+            else if(smtResult.equals("sat"))
+            {
+                assertionFormula.isValid = Answer.No;
+                // get a model
+                client.sendCommand("\n(get-model)");
+                String modelString = client.getOutput();
+
+                if(debug)
+                {
+                    System.out.println(modelString);
+                }
+
+                Map<String, String> model = getSmtModel(modelString);
+
+                Map<String, String> counterExample = new HashMap<>();
+
+                if(model.size() > 0)
+                {
+                    for (Map.Entry<String, String> entry :
+                            function.startStates.get(0).symbolTable.entrySet())
+                    {
+                        String variableName = entry.getKey();
+                        String symbolicValue = entry.getValue();
+                        String value = model.get(symbolicValue);
+                        counterExample.put(variableName, value);
+                    }
+                }
+                assertionFormula.counterExample = counterExample;
+            }
+            else
+            {
+                if(debug)
+                {
+                    System.out.println(smtResult);
+                }
+                assertionFormula.isValid = Answer.Unknown;
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     private Map<String, String> getSmtModel(String model)

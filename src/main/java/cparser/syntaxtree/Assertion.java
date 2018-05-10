@@ -1,5 +1,6 @@
 package cparser.syntaxtree;
 
+import symbolicengine.AssertionFormula;
 import symbolicengine.StatePath;
 
 import java.util.ArrayList;
@@ -8,7 +9,8 @@ import java.util.List;
 public class Assertion extends Statement
 {
     public Expression expression;
-    public List<String> assertionFormulas = new ArrayList<>();
+
+    public List<AssertionFormula> assertionFormulas = new ArrayList<>();
 
     public Assertion(Expression expression)
     {
@@ -41,7 +43,9 @@ public class Assertion extends Statement
                 formula= statePath.constraint + "\n(assert (<= "  +
                         expressionValue + " 0 ))";
             }
-            this.assertionFormulas.add(formula);
+
+            AssertionFormula assertionFormula = new AssertionFormula(formula);
+            this.assertionFormulas.add(assertionFormula);
         }
         // add assertion to the assertions list of the current function
         function.assertions.add(this);
