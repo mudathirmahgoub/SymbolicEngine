@@ -125,7 +125,9 @@ public class CVisitor extends CBaseVisitor<CNode>
             //unary expression
             if(ctx.expression().size() == 1)
             {
-                throw new UnsupportedOperationException();
+                String operator = ctx.getChild(0).getText();
+                Expression expression = (Expression) this.visitExpression(ctx.expression(0));
+                return new UnaryExpression(operator, expression);
             }
 
             String operator = ctx.getChild(1).getText();

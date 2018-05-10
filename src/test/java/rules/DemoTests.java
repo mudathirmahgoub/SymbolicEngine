@@ -197,12 +197,29 @@ public class DemoTests
     @Test()
     void simplestTestWithArguments2() throws IOException
     {
-        String code = "void f (int x, int y) { assert (x + y > 0);}";
+        String code = "void f (int x, int y) { assert (x + y > -1);}";
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
         assertEquals(2, result.counterExample.size());
-        assertEquals("{x=0, y=0}", result.counterExample.toString());
+        assertEquals("{x=-1, y=0}", result.counterExample.toString());
     }
 
+    @Test()
+    void simplestTestWithArguments3SquareAlwaysPositive() throws IOException
+    {
+        String code = "void f (int x) { assert (x * x >= 0);}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.Yes, result.isValid);
+    }
+
+    @Test()
+    void simplestTestWithArguments4AlwaysNegative() throws IOException
+    {
+        String code = "void f (int x) { assert (x * -x <= 0);}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.Yes, result.isValid);
+    }
 }
