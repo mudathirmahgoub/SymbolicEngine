@@ -184,6 +184,8 @@ public class DemoTests
         assertEquals(0, result.counterExample.size());
     }
 
+    /**************************************************************************/
+
     @Test()
     void simpleTestWithArguments1() throws IOException
     {
@@ -224,6 +226,7 @@ public class DemoTests
         assertEquals(Answer.Yes, result.isValid);
     }
 
+    /**************************************************************************/
     @Test()
     void simpleTestWithAssignment1() throws IOException
     {
@@ -291,7 +294,7 @@ public class DemoTests
         assertEquals("{x=1, y=1}", result.counterExample.toString());
     }
 
-    /**************************************************************************/
+    /**********************************************************/
 
     @Test()
     void simpleTestWithVariableDefinition1() throws IOException
