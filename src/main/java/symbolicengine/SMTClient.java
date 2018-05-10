@@ -8,7 +8,7 @@ public class SMTClient
 {
     private Process process;
     private Scanner scanner;
-    private Formatter formatter;
+    boolean firstRead = true;
 
     public void connect() throws IOException
     {
@@ -30,8 +30,29 @@ public class SMTClient
 
     public String getOutput() throws IOException
     {
-        this.sendCommand("assert(true)");
-        String line = scanner.nextLine();
+        this.sendCommand("(echo \" \")");
+        String line = "";
+        if(firstRead)
+        {
+            line = scanner.nextLine();
+            firstRead = false;
+        }
+        else
+        {
+            this.sendCommand("(echo \" \")");
+            this.sendCommand("(echo \" \")");
+            String output = "";
+            line = scanner.nextLine();
+            while(scanner.hasNextLine())
+            {
+                line = scanner.nextLine();
+                if(line.equals(" "))
+                {
+                    return output;
+                }
+                output += line;
+            }
+        }
         return line;
     }
 

@@ -2,7 +2,7 @@ package rules;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import parser.syntaxtree.CNode;
+import cparser.syntaxtree.CNode;
 import symbolicengine.Answer;
 import symbolicengine.Result;
 import symbolicengine.SymbolicEngine;
@@ -189,8 +189,20 @@ public class DemoTests
         String code = "void f (int x) { assert (x > 0);}";
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
-        assertEquals(Answer.Yes, result.isValid);
-        assertEquals(0, result.counterExample.size());
+        assertEquals(Answer.No, result.isValid);
+        assertEquals(1, result.counterExample.size());
+        assertEquals("{x=0}", result.counterExample.toString());
+    }
+
+    @Test()
+    void simplestTestWithArguments2() throws IOException
+    {
+        String code = "void f (int x, int y) { assert (x + y > 0);}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.No, result.isValid);
+        assertEquals(2, result.counterExample.size());
+        assertEquals("{x=0, y=0}", result.counterExample.toString());
     }
 
 }

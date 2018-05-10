@@ -1,6 +1,4 @@
-package parser.syntaxtree;
-
-import symbolicengine.Formula;
+package cparser.syntaxtree;
 
 import java.util.ArrayList;
 import java.util.List;

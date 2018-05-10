@@ -1,9 +1,6 @@
-package parser.syntaxtree;
+package cparser.syntaxtree;
 
 import symbolicengine.StatePath;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class BinaryExpression extends Expression
 {

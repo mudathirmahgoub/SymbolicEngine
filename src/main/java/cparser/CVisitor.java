@@ -1,10 +1,10 @@
-package parser;
+package cparser;
 
-import parser.antlr.CBaseVisitor;
-import parser.antlr.CParser;
-import parser.syntaxtree.*;
+import cparser.antlr.CBaseVisitor;
+import cparser.antlr.CParser;
+import cparser.syntaxtree.*;
 
-public class Visitor  extends CBaseVisitor<CNode>
+public class CVisitor extends CBaseVisitor<CNode>
 {
     @Override
     public CNode visitProgram(CParser.ProgramContext ctx)

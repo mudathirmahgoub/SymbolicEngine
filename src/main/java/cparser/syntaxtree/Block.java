@@ -1,6 +1,4 @@
-package parser.syntaxtree;
-
-import symbolicengine.StatePath;
+package cparser.syntaxtree;
 
 import java.util.ArrayList;
 import java.util.List;

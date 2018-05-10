@@ -1,1 +1,0 @@
-java -jar antlr-4.7.1-complete.jar C.g4 -visitor -package parser.antlr

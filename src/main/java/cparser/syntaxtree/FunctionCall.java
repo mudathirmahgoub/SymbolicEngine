@@ -1,17 +1,10 @@
-package parser.syntaxtree;
+package cparser.syntaxtree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class Arguments extends  CNode
+public class FunctionCall extends Statement
 {
-    public Map<String, String> arguments = new HashMap<>();
     @Override
     public void execute(Function function, CNode parent)
     {
-        // no action is required
         throw new UnsupportedOperationException();
     }
 

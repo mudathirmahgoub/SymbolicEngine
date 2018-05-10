@@ -4,17 +4,22 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import parser.Visitor;
-import parser.antlr.CLexer;
-import parser.antlr.CParser;
-import parser.syntaxtree.Assertion;
-import parser.syntaxtree.CNode;
-import parser.syntaxtree.Function;
-import parser.syntaxtree.Program;
+import cparser.CVisitor;
+import cparser.antlr.CLexer;
+import cparser.antlr.CParser;
+import cparser.syntaxtree.Assertion;
+import cparser.syntaxtree.CNode;
+import cparser.syntaxtree.Function;
+import cparser.syntaxtree.Program;
+import smtparser.SmtVisitor;
+import smtparser.antlr.SmtLexer;
+import smtparser.antlr.SmtParser;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SymbolicEngine
 {
@@ -39,8 +44,8 @@ public class SymbolicEngine
         CParser parser = new CParser(tokenStream);
 
         ParseTree tree =  parser.program();
-        Visitor visitor = new Visitor();
-        this.program = (Program) visitor.visit(tree);
+        CVisitor CVisitor = new CVisitor();
+        this.program = (Program) CVisitor.visit(tree);
     }
 
     public Result verify() throws IOException {
@@ -68,7 +73,28 @@ public class SymbolicEngine
                         }
                         else if(smtResult.equals("sat"))
                         {
-                            return new Result(Answer.No);
+                            // get a model
+                            client.sendCommand("\n(get-model)");
+                            String modelString = client.getOutput();
+
+                            System.out.println(modelString);
+
+                            Result result = new Result(Answer.No);
+
+                            Map<String, String>  model = getSmtModel(modelString);
+
+                            Map<String, String> counterExample = new HashMap<>();
+
+                            for (Map.Entry<String, String> entry :
+                                    function.startStates.get(0).symbolTable.entrySet())
+                            {
+                                String variableName = entry.getKey();
+                                String symbolicValue = entry.getValue();
+                                String value = model.get(symbolicValue);
+                                counterExample.put(variableName, value);
+                            }
+                            result.counterExample = counterExample;
+                            return result;
                         }
                         else
                         {
@@ -87,6 +113,19 @@ public class SymbolicEngine
 
         }
         return new Result(Answer.Yes);
+    }
+
+    private Map<String, String> getSmtModel(String model)
+    {
+        CharStream charStream = CharStreams.fromString(model);
+        SmtLexer lexer = new SmtLexer(charStream);
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SmtParser parser = new SmtParser(tokenStream);
+
+        ParseTree tree =  parser.model();
+        SmtVisitor SmtVisitor = new SmtVisitor();
+
+        return SmtVisitor.visit(tree);
     }
 
     private String declareVariables()

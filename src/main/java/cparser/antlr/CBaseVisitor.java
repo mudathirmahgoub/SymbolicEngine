@@ -1,5 +1,5 @@
 // Generated from C.g4 by ANTLR 4.7.1
-package parser.antlr;
+package cparser.antlr;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**

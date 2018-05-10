@@ -1,8 +1,6 @@
-package parser.syntaxtree;
+package cparser.syntaxtree;
 
 import symbolicengine.StatePath;
-
-import java.util.List;
 
 public class Variable extends Expression
 {
