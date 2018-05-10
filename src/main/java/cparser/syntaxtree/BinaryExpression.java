@@ -52,6 +52,21 @@ public class BinaryExpression extends Expression
     public void execute(Function function, CNode parent)
     {
         this.parent = parent;
+        if(this.binaryOperator.equals("/"))
+        {
+            // make sure the denominator is not zero
+            BinaryExpression expression = new BinaryExpression("!=", right,
+                    new IntegerConstant(0));
+            Assertion assertion = new Assertion(expression);
+            // get the start state
+            CNode parentStatement = parent;
+            while(!(parentStatement instanceof Statement))
+            {
+                parentStatement = parentStatement.parent;
+            }
+            assertion.startStates = parentStatement.startStates;
+            assertion.execute(function, this);
+        }
     }
 
     @Override

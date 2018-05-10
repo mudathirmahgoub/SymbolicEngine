@@ -363,6 +363,38 @@ public class DemoTests
     /**********************************************************/
 
     @Test()
+    void testDivisionAssertions1() throws IOException
+    {
+        String code = "void f (int x, int y) {x = x / y;}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.No, result.isValid);
+        assertEquals("{x=null, y=0}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
+    }
+
+    @Test()
+    void testDivisionAssertions2() throws IOException
+    {
+        String code = "void f (int x, int y) {x = x / ((x+1)*(x+1) + (y+1)*(y+1);}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.No, result.isValid);
+        assertEquals("{x=-1, y=-1}", result.assertions.get(0).assertionFormulas.get(0).counterExample.toString());
+    }
+
+    @Test()
+    void testDivisionAssertions3() throws IOException
+    {
+        String code = "void f (int x, int y) {x = x / (x*x + y*y + 1;}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.Yes, result.isValid);
+    }
+
+
+    /**********************************************************/
+
+    @Test()
     void examProblem() throws IOException
     {
         String code = "int function_to_test(int x, int y) {" +
