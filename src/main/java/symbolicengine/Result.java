@@ -7,4 +7,8 @@ public class Result
 {
     public Answer isValid;
     public Map<String, String> counterExample = new HashMap<>();
+    public Result(Answer answer)
+    {
+        this.isValid = answer;
+    }
 }

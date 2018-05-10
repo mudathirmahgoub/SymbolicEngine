@@ -8,6 +8,7 @@ import parser.Visitor;
 import parser.antlr.CLexer;
 import parser.antlr.CParser;
 import parser.syntaxtree.Assertion;
+import parser.syntaxtree.CNode;
 import parser.syntaxtree.Function;
 import parser.syntaxtree.Program;
 import java.io.File;
@@ -42,47 +43,59 @@ public class SymbolicEngine
         this.program = (Program) visitor.visit(tree);
     }
 
-    public Result verify()
-    {
+    public Result verify() throws IOException {
         program.execute(null, null);
-
-        String smtCommand = "";
 
         for (Function function: program.functions)
         {
             for (Assertion assertion :function.assertions)
             {
-                List<String> formulas = assertion.evaluate();
-                smtCommand = String.join("\n", formulas);
+                for(String formula : assertion.assertionFormulas)
+                {
+                    String smtCommand = declareVariables();
+                    smtCommand += formula + "\n(check-sat)";
+
+                    //ToDO: clear the previous formula
+                    SMTClient client = new SMTClient();
+                    try
+                    {
+                        client.connect();
+                        client.sendCommand(smtCommand);
+                        String smtResult = client.getOutput();
+                        if(smtResult.equals("unsat"))
+                        {
+                            continue;
+                        }
+                        else if(smtResult.equals("sat"))
+                        {
+                            return new Result(Answer.No);
+                        }
+                        else
+                        {
+                            System.out.println(smtCommand);
+                            System.out.println(smtResult);
+                            return new Result(Answer.Unknown);
+                        }
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                        throw e;
+                    }
+                }
             }
+
         }
+        return new Result(Answer.Yes);
+    }
 
-        smtCommand += "\n(check-sat)";
-
-        SMTClient client = new SMTClient();
-        try
+    private String declareVariables()
+    {
+        String declarations = "";
+        for (String symbolicValue : CNode.symbolicValues)
         {
-            client.connect();
-            client.sendCommand(smtCommand);
-            String isSatisfiable = client.getOutput();
-            if(isSatisfiable.equals("unsat"))
-            {
-                Result result = new Result();
-                result.isValid = Answer.Yes;
-                return result;
-            }
-
-            if(isSatisfiable.equals("sat"))
-            {
-                Result result = new Result();
-                result.isValid = Answer.No;
-                return result;
-            }
+            declarations +=  "(declare-fun " + symbolicValue + "() Int)\n" ;
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        throw new UnsupportedOperationException();
+        return  declarations;
     }
 }

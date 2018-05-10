@@ -1,5 +1,7 @@
 package parser.syntaxtree;
 
+import symbolicengine.StatePath;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class IntegerConstant extends Constant
     }
 
     @Override
-    public String evaluate()
+    public String evaluate(StatePath statePath)
     {
         return "" + value;
     }

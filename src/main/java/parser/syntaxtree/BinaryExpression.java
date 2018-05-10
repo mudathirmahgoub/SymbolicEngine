@@ -1,5 +1,7 @@
 package parser.syntaxtree;
 
+import symbolicengine.StatePath;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,11 +58,11 @@ public class BinaryExpression extends Expression
     }
 
     @Override
-    public String evaluate()
+    public String evaluate(StatePath statePath)
     {
         String formula;
-        String leftFormula = left.evaluate();
-        String rightFormula = right.evaluate();
+        String leftFormula = left.evaluate(statePath);
+        String rightFormula = right.evaluate(statePath);
 
         switch (binaryOperator)
         {

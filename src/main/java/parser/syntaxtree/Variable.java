@@ -1,5 +1,7 @@
 package parser.syntaxtree;
 
+import symbolicengine.StatePath;
+
 import java.util.List;
 
 public class Variable extends Expression
@@ -19,9 +21,11 @@ public class Variable extends Expression
     }
 
     @Override
-    public String evaluate()
+    public String evaluate(StatePath statePath)
     {
-        return null;
+        // get the current symbolic of this variable
+        String value = statePath.symbolTable.get(this.name);
+        return value;
     }
 
     @Override

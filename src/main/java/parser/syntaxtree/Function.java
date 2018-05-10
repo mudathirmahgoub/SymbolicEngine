@@ -48,7 +48,8 @@ public class Function extends CNode
             String symbolicValue = CNode.getSymbolValue();
             statePath.symbolTable.put(variableName, symbolicValue);
         }
-        this.statePaths.add(statePath);
+        statePath.constraint = "";
+        this.startStates.add(statePath);
 
         block.execute(this, this);
     }

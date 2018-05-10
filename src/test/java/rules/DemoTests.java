@@ -2,9 +2,12 @@ package rules;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import parser.syntaxtree.CNode;
 import symbolicengine.Answer;
 import symbolicengine.Result;
 import symbolicengine.SymbolicEngine;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,10 +18,11 @@ public class DemoTests
     @BeforeEach
     public void clear()
     {
+        CNode.symbolicValues.clear();
     }
 
     @Test()
-    void simplestTest1()
+    void simplestTest1() throws IOException
     {
         String code = "void f () { assert (true);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -27,7 +31,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest2()
+    void simplestTest2() throws IOException
     {
         String code = "void f () { assert (false);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -37,7 +41,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest3()
+    void simplestTest3() throws IOException
     {
         String code = "void f () { assert (0);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -47,7 +51,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest4()
+    void simplestTest4() throws IOException
     {
         String code = "void f () { assert (5);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -58,7 +62,7 @@ public class DemoTests
 
 
     @Test()
-    void simplestTest5()
+    void simplestTest5() throws IOException
     {
         String code = "void f () { assert (5 + 3);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -68,7 +72,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest6()
+    void simplestTest6() throws IOException
     {
         String code = "void f () { assert (5 - 3);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -78,7 +82,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest7()
+    void simplestTest7() throws IOException
     {
         String code = "void f () { assert (5 - 7);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -88,7 +92,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest8()
+    void simplestTest8() throws IOException
     {
         String code = "void f () { assert (5 * 2);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -98,7 +102,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest9()
+    void simplestTest9() throws IOException
     {
         String code = "void f () { assert (5 / 2);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -108,7 +112,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest10()
+    void simplestTest10() throws IOException
     {
         String code = "void f () { assert (5 % 2);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -118,7 +122,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest11()
+    void simplestTest11() throws IOException
     {
         String code = "void f () { assert (5 > 2);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -128,7 +132,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest12()
+    void simplestTest12() throws IOException
     {
         String code = "void f () { assert (5 >= 2);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -139,7 +143,7 @@ public class DemoTests
 
 
     @Test()
-    void simplestTest13()
+    void simplestTest13() throws IOException
     {
         String code = "void f () { assert (5 < 2);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -149,7 +153,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest14()
+    void simplestTest14() throws IOException
     {
         String code = "void f () { assert (5 <= 2);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -160,7 +164,7 @@ public class DemoTests
 
 
     @Test()
-    void simplestTest15()
+    void simplestTest15() throws IOException
     {
         String code = "void f () { assert (5 == 2);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -170,7 +174,7 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTest16()
+    void simplestTest16() throws IOException
     {
         String code = "void f () { assert (5 != 2);}";
         SymbolicEngine engine = new SymbolicEngine(code);
@@ -180,9 +184,9 @@ public class DemoTests
     }
 
     @Test()
-    void simplestTestWithArguments1()
+    void simplestTestWithArguments1() throws IOException
     {
-        String code = "void f (int x) { assert (x);}";
+        String code = "void f (int x) { assert (x > 0);}";
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
