@@ -21,7 +21,7 @@ statement
         : block
         | variableDefinition
         | If '(' expression ')' statement ('else' statement)?
-        | 'return' expression? ';'
+        | Return expression? ';'
         | Identifier '=' expression ';'
         | functionCall ';'
         | PlusPlus Identifier ';'

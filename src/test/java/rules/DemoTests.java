@@ -297,6 +297,26 @@ public class DemoTests
     /**********************************************************/
 
     @Test()
+    void plusPlus1() throws IOException
+    {
+        String code = "void f (int x) { x ++;  assert (x <= 5);}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.No, result.isValid);
+        assertEquals("{x=5}", result.counterExample.toString());
+    }
+
+    @Test()
+    void plusPlus2() throws IOException
+    {
+        String code = "void f (int x) {x = 0; ++x;  assert (x >= 1);}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.Yes, result.isValid);
+    }
+
+    /**********************************************************/
+    @Test()
     void simpleTestWithVariableDefinition1() throws IOException
     {
         String code = "void f (int x, int y) { int z ;  assert (z >= z);}";

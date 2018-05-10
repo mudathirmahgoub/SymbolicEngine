@@ -568,6 +568,7 @@ public class CParser extends Parser {
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
 		}
+		public TerminalNode Return() { return getToken(CParser.Return, 0); }
 		public TerminalNode Identifier() { return getToken(CParser.Identifier, 0); }
 		public FunctionCallContext functionCall() {
 			return getRuleContext(FunctionCallContext.class,0);

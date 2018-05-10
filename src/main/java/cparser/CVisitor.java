@@ -86,6 +86,13 @@ public class CVisitor extends CBaseVisitor<CNode>
             return this.visitBlock(ctx.block());
         }
 
+        // ++
+        if(ctx.PlusPlus() != null)
+        {
+            Variable variable = new Variable(ctx.Identifier().getText());
+            return new PlusPlusStatement(variable);
+        }
+
         // assignment statement
         if(ctx.Identifier() != null && ctx.expression()!= null)
         {
@@ -109,24 +116,40 @@ public class CVisitor extends CBaseVisitor<CNode>
             // if statement
             if(symbol.getType() == CLexer.If)
             {
-                Expression condition = (Expression) visitExpression(ctx.expression());
-                Statement trueStatement = (Statement) visitStatement(ctx.statement(0));
-                IfStatement ifStatement = new IfStatement(condition, trueStatement);
-                // else statement
-                if(ctx.statement().size() > 1)
-                {
-                    Statement falseStatement = (Statement)
-                            visitStatement(ctx.statement(0));
-                    ifStatement.falseStatement = falseStatement;
-                }
-                else
-                {
-                    ifStatement.falseStatement = new NoOperation();
-                }
-                return ifStatement;
+                return getIfStatement(ctx);
             }
+            if(symbol.getType() == CLexer.Return)
+            {
+                if(ctx.expression() != null)
+                {
+                    Expression expression = (Expression)
+                            visitExpression(ctx.expression());
+                    return  new ReturnStatement(expression);
+                }
+                return new ReturnStatement();
+            }
+
         }
         throw new UnsupportedOperationException();
+    }
+
+    private CNode getIfStatement(CParser.StatementContext ctx)
+    {
+        Expression condition = (Expression) visitExpression(ctx.expression());
+        Statement trueStatement = (Statement) visitStatement(ctx.statement(0));
+        IfStatement ifStatement = new IfStatement(condition, trueStatement);
+        // else statement
+        if(ctx.statement().size() > 1)
+        {
+            Statement falseStatement = (Statement)
+                    visitStatement(ctx.statement(0));
+            ifStatement.falseStatement = falseStatement;
+        }
+        else
+        {
+            ifStatement.falseStatement = new NoOperation();
+        }
+        return ifStatement;
     }
 
     @Override
