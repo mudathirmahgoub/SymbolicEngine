@@ -11,7 +11,6 @@ public class Block extends Statement
     public void execute(Function function, CNode parent)
     {
         this.parent = parent;
-        this.startStates = parent.startStates;
 
         for(int i = 0 ; i < statements.size(); i++)
         {

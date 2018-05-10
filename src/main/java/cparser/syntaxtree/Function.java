@@ -51,6 +51,8 @@ public class Function extends CNode
         statePath.constraint = "";
         this.startStates.add(statePath);
 
+        block.startStates = this.startStates;
+
         block.execute(this, this);
     }
 }

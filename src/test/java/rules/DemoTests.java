@@ -391,7 +391,6 @@ public class DemoTests
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
-        assertEquals("{}", result.counterExample.toString());
     }
 
 }

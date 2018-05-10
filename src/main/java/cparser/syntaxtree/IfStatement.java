@@ -27,7 +27,7 @@ public class IfStatement extends Statement
         for (StatePath statePath : trueStatement.startStates)
         {
             String conditionTrue = condition.evaluate(statePath);
-            statePath.constraint += "(assert " + conditionTrue + ")";
+            statePath.constraint += "\n(assert " + conditionTrue + ")";
         }
 
         this.trueStatement.execute(function, this);
@@ -38,7 +38,7 @@ public class IfStatement extends Statement
         for (StatePath statePath : falseStatement.startStates)
         {
             String conditionTrue = condition.evaluate(statePath);
-            statePath.constraint += "(assert (not " + conditionTrue + "))";
+            statePath.constraint += "\n(assert (not " + conditionTrue + "))";
         }
         this.falseStatement.execute(function, this);
         this.endStates.addAll(StatePath.copy(falseStatement.endStates));
