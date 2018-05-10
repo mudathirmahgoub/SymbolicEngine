@@ -77,6 +77,7 @@ public class SymbolicEngine
                             client.sendCommand("\n(get-model)");
                             String modelString = client.getOutput();
 
+                            //ToDO: remove this debug line
                             System.out.println(modelString);
 
                             Result result = new Result(Answer.No);
@@ -98,6 +99,7 @@ public class SymbolicEngine
                         }
                         else
                         {
+                            //ToDO: remove this debug lines
                             System.out.println(smtCommand);
                             System.out.println(smtResult);
                             return new Result(Answer.Unknown);

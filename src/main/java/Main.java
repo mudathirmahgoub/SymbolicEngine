@@ -3,6 +3,11 @@ import symbolicengine.Result;
 import symbolicengine.SymbolicEngine;
 
 import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Formatter;
 
 public class Main
 {
@@ -30,7 +35,10 @@ public class Main
 
                 if(command.hasOption("o"))
                 {
-                    throw new UnsupportedOperationException();
+                    File outputFile = new File(command.getOptionValue("o"));
+                    Formatter formatter = new Formatter(outputFile);
+                    formatter.format("%s", result.toString());
+                    formatter.close();
                 }
             }
             else
