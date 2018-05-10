@@ -45,7 +45,7 @@ public class Function extends CNode
         for (Map.Entry<String, String> entry: function.arguments.arguments.entrySet())
         {
             String variableName = entry.getKey();
-            String symbolicValue = CNode.getSymbolValue();
+            String symbolicValue = CNode.getNewSymbolicValue();
             statePath.symbolTable.put(variableName, symbolicValue);
         }
         statePath.constraint = "";

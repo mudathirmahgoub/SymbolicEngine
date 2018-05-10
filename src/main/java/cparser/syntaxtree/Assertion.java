@@ -19,7 +19,8 @@ public class Assertion extends Statement
     public void execute(Function function, CNode parent)
     {
         this.parent = parent;
-        // the assertion statement add a formula to the path
+
+        // assertions don't affect the state
         this.endStates = StatePath.copy(this.startStates);
 
         this.expression.execute(function, this);

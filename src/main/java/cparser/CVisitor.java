@@ -82,15 +82,38 @@ public class CVisitor extends CBaseVisitor<CNode>
         {
             return this.visitBlock(ctx.block());
         }
+
+        // assignment statement
+        if(ctx.Identifier() != null && ctx.expression()!= null)
+        {
+            Variable variable =  new Variable(ctx.Identifier().getText());
+            Expression expression = (Expression) this.visitExpression(ctx.expression());
+            return new Assignment(variable, expression);
+        }
+
         if(ctx.variableDefinition() != null)
         {
-            throw new UnsupportedOperationException();
+            return this.visitVariableDefinition(ctx.variableDefinition());
         }
         if(ctx.functionCall() != null)
         {
             return this.visitFunctionCall(ctx.functionCall());
         }
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public CNode visitVariableDefinition(CParser.VariableDefinitionContext ctx)
+    {
+        String type = ctx.type().getText();
+        Variable variable = new Variable(ctx.Identifier().getText());
+        VariableDefinition definition = new VariableDefinition(type, variable);
+        if(ctx.expression() != null)
+        {
+            Expression expression = (Expression) visitExpression(ctx.expression());
+            definition.expression = expression;
+        }
+        return definition;
     }
 
     @Override

@@ -7,7 +7,7 @@ program : (functionDefinition | variableDefinition )+ ;
 
 functionDefinition : type Identifier '(' arguments? ')' block;
 
-variableDefinition : type Identifier ('=' expression) ';';
+variableDefinition : type Identifier ('=' expression)? ';';
 
 arguments : argument (',' argument)*;
 

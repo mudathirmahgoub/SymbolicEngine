@@ -24,6 +24,7 @@ import java.util.Map;
 public class SymbolicEngine
 {
     private Program program;
+    public static boolean debug = false;
     public SymbolicEngine(File file) throws IOException
     {
         CharStream charStream = CharStreams.fromFileName(file.getAbsolutePath(),
@@ -60,6 +61,11 @@ public class SymbolicEngine
                     String smtCommand = declareVariables();
                     smtCommand += formula + "\n(check-sat)";
 
+                    if(debug)
+                    {
+                        System.out.println(smtCommand);
+                    }
+
                     //ToDO: clear the previous formula
                     SMTClient client = new SMTClient();
                     try
@@ -77,31 +83,36 @@ public class SymbolicEngine
                             client.sendCommand("\n(get-model)");
                             String modelString = client.getOutput();
 
-                            //ToDO: remove this debug line
-                            System.out.println(modelString);
-
+                            if(debug)
+                            {
+                                System.out.println(modelString);
+                            }
                             Result result = new Result(Answer.No);
 
                             Map<String, String>  model = getSmtModel(modelString);
 
                             Map<String, String> counterExample = new HashMap<>();
 
-                            for (Map.Entry<String, String> entry :
-                                    function.startStates.get(0).symbolTable.entrySet())
+                            if(model.size() > 0)
                             {
-                                String variableName = entry.getKey();
-                                String symbolicValue = entry.getValue();
-                                String value = model.get(symbolicValue);
-                                counterExample.put(variableName, value);
+                                for (Map.Entry<String, String> entry :
+                                        function.startStates.get(0).symbolTable.entrySet())
+                                {
+                                    String variableName = entry.getKey();
+                                    String symbolicValue = entry.getValue();
+                                    String value = model.get(symbolicValue);
+                                    counterExample.put(variableName, value);
+                                }
                             }
                             result.counterExample = counterExample;
                             return result;
                         }
                         else
                         {
-                            //ToDO: remove this debug lines
-                            System.out.println(smtCommand);
-                            System.out.println(smtResult);
+                            if(debug)
+                            {
+                                System.out.println(smtResult);
+                            }
                             return new Result(Answer.Unknown);
                         }
                     }

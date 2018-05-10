@@ -15,7 +15,7 @@ abstract public class CNode
 
     public static List<String> symbolicValues = new ArrayList<>();
 
-    public static String getSymbolValue()
+    public static String getNewSymbolicValue()
     {
         symbolicIndex ++;
         String symbolicValue =  "_x" + symbolicIndex;
