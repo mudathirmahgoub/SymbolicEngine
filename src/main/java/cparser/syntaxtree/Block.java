@@ -40,4 +40,15 @@ public class Block extends Statement
         return parent.getType(variableName);
     }
 
+    @Override
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Block: ");
+        for (Statement statement: this.statements)
+        {
+            builder.append(statement.toString() + "\n");
+        }
+        return builder.toString();
+    }
 }

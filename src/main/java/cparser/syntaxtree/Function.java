@@ -55,4 +55,10 @@ public class Function extends CNode
 
         block.execute(this, this);
     }
+
+    @Override
+    public String toString()
+    {
+        return "Function: " + type + " " + name + arguments;
+    }
 }

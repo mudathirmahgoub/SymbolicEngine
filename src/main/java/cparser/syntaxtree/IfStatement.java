@@ -49,4 +49,10 @@ public class IfStatement extends Statement
     {
         return parent.getType(variableName);
     }
+
+    @Override
+    public String toString()
+    {
+        return "if(" + condition + ")";
+    }
 }

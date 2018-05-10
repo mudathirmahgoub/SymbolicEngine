@@ -60,4 +60,10 @@ public class VariableDefinition extends Statement
         }
         return parent.getType(variableName);
     }
+
+    @Override
+    public String toString()
+    {
+        return "VariableDefinition: " + type +" "+ variable.name;
+    }
 }

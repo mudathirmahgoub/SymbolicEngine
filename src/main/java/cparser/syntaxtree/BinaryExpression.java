@@ -77,4 +77,10 @@ public class BinaryExpression extends Expression
         }
         return formula;
     }
+
+    @Override
+    public String toString()
+    {
+        return "BinaryExpression: " + left + binaryOperator + right + ";";
+    }
 }

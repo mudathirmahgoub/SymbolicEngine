@@ -19,4 +19,9 @@ public class Arguments extends  CNode
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public String toString()
+    {
+        return "Arguments: " + arguments.toString();
+    }
 }

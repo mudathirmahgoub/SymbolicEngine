@@ -37,4 +37,10 @@ public class Variable extends Expression
     {
         this.parent = parent;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Variable: " + name;
+    }
 }

@@ -39,4 +39,10 @@ public class Assignment extends Statement
     {
         return parent.getType(variableName);
     }
+
+    @Override
+    public String toString()
+    {
+        return "Assignment: " + variable + " = "+ expression.toString() + ";";
+    }
 }

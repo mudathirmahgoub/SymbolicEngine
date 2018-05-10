@@ -27,4 +27,10 @@ public class ReturnStatement extends Statement
     {
         return parent.getType(variableName);
     }
+
+    @Override
+    public String toString()
+    {
+        return "Return: " + expression;
+    }
 }

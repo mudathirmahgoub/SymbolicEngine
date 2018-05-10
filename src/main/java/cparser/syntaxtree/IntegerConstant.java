@@ -33,4 +33,10 @@ public class IntegerConstant extends Constant
     {
         return false;
     }
+
+    @Override
+    public String toString()
+    {
+        return "IntegerConstant: " + value ;
+    }
 }

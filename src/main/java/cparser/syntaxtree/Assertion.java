@@ -53,4 +53,9 @@ public class Assertion extends Statement
         return parent.getType(variableName);
     }
 
+    @Override
+    public String toString()
+    {
+        return "Assertions: assert(" + expression.toString() + ")";
+    }
 }

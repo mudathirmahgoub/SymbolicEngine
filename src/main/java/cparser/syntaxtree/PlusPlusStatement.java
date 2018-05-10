@@ -39,4 +39,10 @@ public class PlusPlusStatement extends Statement
     {
         return parent.getType(variableName);
     }
+
+    @Override
+    public String toString()
+    {
+        return "PlusPlusStatement: " + variable + "++";
+    }
 }

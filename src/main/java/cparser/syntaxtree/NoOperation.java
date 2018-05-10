@@ -17,4 +17,10 @@ public class NoOperation extends Statement
     {
         return parent.getType(variableName);
     }
+
+    @Override
+    public String toString()
+    {
+        return "NoOperation";
+    }
 }
