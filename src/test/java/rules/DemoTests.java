@@ -353,13 +353,15 @@ public class DemoTests
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
         assertEquals("{x=0, y=1}", result.assertions.get(0).assertionFormulas.get(1).counterExample.toString());
+
+        System.out.println(result);
     }
 
     @Test()
     void ifTest2() throws IOException
     {
         String code = "void f (int x, int y) {" +
-                    "if(x > 0) y = x " +
+                    "if(x > 0) y = x; " +
                     "else y = x;  " +
                     "assert (y == x);" +
                 "}";
@@ -384,7 +386,7 @@ public class DemoTests
     @Test()
     void testDivisionAssertions2() throws IOException
     {
-        String code = "void f (int x, int y) {x = x / ((x+1)*(x+1) + (y+1)*(y+1);}";
+        String code = "void f (int x, int y) {x = x / ((x+1)*(x+1) + (y+1)*(y+1));}";
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.No, result.isValid);
@@ -394,7 +396,7 @@ public class DemoTests
     @Test()
     void testDivisionAssertions3() throws IOException
     {
-        String code = "void f (int x, int y) {x = x / (x*x + y*y + 1;}";
+        String code = "void f (int x, int y) {x = x / (x*x + y*y + 1);}";
         SymbolicEngine engine = new SymbolicEngine(code);
         Result result= engine.verify();
         assertEquals(Answer.Yes, result.isValid);
