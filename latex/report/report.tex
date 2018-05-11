@@ -12,6 +12,7 @@
 \usepackage{lscape}
 \usepackage{listings}
 \usepackage{amsthm}
+\usepackage{url}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 
 \author{Mudathir Mahgoub}
@@ -50,7 +51,17 @@ The paper \cite{paper} describes many challenges in symbolic execution that incl
 
 \end{itemize}
 
-\subsection{Personal challenges}
+\subsection{Personal challenges in this project}
+
+Some issues arose during the implementation of the project. Here are some of them:
+
+\begin{itemize}
+\item A grammar for C: the official grammar is too much for this project, and many simple grammars in the internet were not enough. So I prepared a specific one with the help of 3 grammars 
+cymbol\footnote{\url{https://github.com/remenska/Grammars/blob/master/book-examples/examples/Cymbol.g4}}, tinyC\footnote{\url{https://github.com/antlr/grammars-v4/blob/master/tinyc/tinyc.g4}}
+and antlr C\footnote{\url{https://github.com/antlr/grammars-v4/blob/master/c/C.g4}} .  
+
+\item  A grammar for SMT-LIB: the official grammar for SMT-LIB\footnote{\url{https://github.com/julianthome/smtlibv2-grammar/blob/master/src/main/resources/SMTLIBv2.g4}} is also a lot for this project which only uses arithmetic theory.  
+\end{itemize}
 
 \section{Existing Approaches}
 
@@ -108,9 +119,10 @@ Here is the output:
 \lstset{caption={java -jar TypeChecker.jar -i test.txt}}
 
 \begin{lstlisting} 
-Total Answer: No
-----------------
-Assertions: assert(BinaryExpression: Variable: y==Variable: x;)
+------------------
+Overall Answer: No
+------------------
+Assertion: (BinaryExpression(Variable(y) == Variable(x)))
 AssertionFormula:
 (assert (> _x1 0))
 (assert (not (= _x1 _x1)))
@@ -125,7 +137,7 @@ Counter example: {x=0, y=1}
 
 \end{lstlisting} 
 
-The following sections focus on the symbolic execution engine. 
+The following section focuses on the symbolic execution engine. 
 
 \subsection{Symbolic execution engine} \label{sec:execution}
 

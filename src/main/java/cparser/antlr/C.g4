@@ -1,5 +1,7 @@
-// inspired by the example https://github.com/remenska/Grammars/blob/master/book-examples/examples/Cymbol.g4
-// and https://github.com/antlr/grammars-v4/blob/master/tinyc/tinyc.g4
+// inspired by the grammars
+// 1- https://github.com/remenska/Grammars/blob/master/book-examples/examples/Cymbol.g4
+// 2- and https://github.com/antlr/grammars-v4/blob/master/tinyc/tinyc.g4
+// 3- https://github.com/antlr/grammars-v4/blob/master/c/C.g4
 
 grammar C;
 
