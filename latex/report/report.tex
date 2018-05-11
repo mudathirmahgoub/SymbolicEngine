@@ -224,6 +224,37 @@ void f (int x, int y)
 }
 \end{lstlisting}
 
+
+Sometimes the Z3 fails to decide the satisfiablity  of non linear arithmetic like the following example:
+
+\begin{lstlisting}  
+void f (int x, int y, int z)
+{
+	assert(!((x*x*x + y*y*y == z*z*z) 
+		&& (x>10) && (y>10) && (z>10)));
+}
+\end{lstlisting}
+
+Z3 returns \textbf{Unknown} for the above example.
+
+
+\begin{lstlisting}
+-----------------------
+Overall Answer: Unknown
+-----------------------
+Assertion: (UnaryExpression...
+AssertionFormula: 
+(assert (not
+	(not 
+	(and (and (and (= (+ 
+	(* (* _x1 _x1) _x1) 
+	(* (* _x2 _x2) _x2)) 
+	(* (* _x3 _x3) _x3)) 
+	(> _x1 10)) (> _x2 10)) (> _x3 10)))))
+Answer: Unknown
+----------------------------
+\end{lstlisting}
+
 \section{Work Division} 
 
 Since there is only one person in this project, all the work is done by him. 
