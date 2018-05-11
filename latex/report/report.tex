@@ -44,14 +44,14 @@ The paper \cite{paper} describes many challenges in symbolic execution that incl
 \begin{itemize}
 \item Scalability: exploring all execution paths doesn't scale well for large programs where number of paths increases exponentially. Therefore in large programs, mixing concrete execution with symbolic execution (concolic execution), and other heuristic approaches are usually used. 
 
-\item Memory: how to symbolically execute operations on pointers, arrays, objects
-\item Environment: how to symbolically interact with time, operating system, network
-\item Loops: the number of paths depends on the number of iterations in the loop. In general, determining whether a loop terminates is not decidable. So symbolic execution can only work with restricted loops or use some heuristics. 
+\item Memory: how to symbolically execute operations on pointers, arrays, objects. In this project only variables are supported. 
+\item Environment: how to symbolically interact with time, operating system, network. Environment is not supported in this project.
+\item Loops: the number of paths depends on the number of iterations in the loop. In general, determining whether a loop terminates is not decidable. So symbolic execution can only work with restricted loops or use some heuristics. Loops are not supported in this project.
 \item Constraint solving:  symbolic execution is limited by the power of the underlying solvers. For example non-linear arithmetic constraints, which are common, are not usually efficient in SMT solvers. 
 
 \end{itemize}
 
-\subsection{Personal challenges in this project}
+\subsection{Project challenges}
 
 Some issues arose during the implementation of the project. Here are some of them:
 
@@ -61,6 +61,11 @@ cymbol\footnote{\url{https://github.com/remenska/Grammars/blob/master/book-examp
 and antlr C\footnote{\url{https://github.com/antlr/grammars-v4/blob/master/c/C.g4}} .  
 
 \item  A grammar for SMT-LIB: the official grammar for SMT-LIB\footnote{\url{https://github.com/julianthome/smtlibv2-grammar/blob/master/src/main/resources/SMTLIBv2.g4}} is also a lot for this project which only uses integer arithmetic. So I wrote one just for parsing the counter examples returned by the SMT solver. 
+
+
+\item Deadlock with Z3 process: one way to interact with Z3 is to call it as a separate process, and send SMT-LIB commands and receive the output. However Z3 process blocks waiting for an input when it executes the previous command. Initially the symbolic execution engine was implemented to send multiple commands and then receive the output of the satisfiablility checking or the model retrieval commands. This resulted in a deadlock where Z3 process is waiting for an input from the symbolic execution engine, and the engine is waiting for the output of Z3. Fortunately z3 supports the ``echo" command which I used to echo white space before reading the output of Z3. 
+
+Another way to interact with Z3 is to use Z3 binding (e.g. com.microsoft.z3.jar for Java), however this approach makes it harder to use other SMT solvers like CVC4 with has its own Java binding (CVC4.jar). 
 \end{itemize}
 
 \section{Existing Approaches}
@@ -100,7 +105,7 @@ Here is an example of an input:
 
 \definecolor{light-gray}{gray}{0.95}
 
-\lstset{caption={test.txt},backgroundcolor= \color{light-gray}}
+\lstset{caption={test.c},backgroundcolor= \color{light-gray}}
 
 
 \begin{lstlisting}  
@@ -116,7 +121,7 @@ void f (int x, int y)
 
 Here is the output:
 
-\lstset{caption={java -jar TypeChecker.jar -i test.txt}}
+\lstset{caption={java -jar SymbolicEngine.jar -i test.c}}
 
 \begin{lstlisting} 
 ------------------
@@ -141,6 +146,81 @@ The following section focuses on the symbolic execution engine.
 
 \subsection{Symbolic execution engine} \label{sec:execution}
 
+The symbolic execution engine starts executing a function by symbolically assigning a new symbolic value to each argument variable. This would be the initial state of function and its block. The initial path constraint for the function would be the empty constraint (equivalent to $true$). For simplicity, I will just call the current state to mean both the current state and the current path constraint. 
+
+For convenience each statement keeps track of \textbf{start states} where it can start from, and \textbf{end states} where it can end with. The \textbf{start states} of the current statement is exactly the \textbf{end states} of the previous statement. The block of a function has only one \textbf{start state} which is the one defined for the function. The first statement of each block inherits the \textbf{start states} of its block. Each statement can not modify its \textbf{start states}, but it can modify its \textbf{end states}. An assignment statement modifies each \textbf{start state} by updating the value of the variable changed in the assignment. A variable definition statement without an assignment would add that variable to the state with a new symbolic value. This is useful to reason about the following function:
+
+\lstset{caption={},backgroundcolor= \color{light-gray}}
+
+\begin{lstlisting}  
+void f()
+{
+	int z;
+	assert (z == z);
+}
+\end{lstlisting}
+
+If the variable is defined with an assignment, the variable will be added to the state with value of the assigned expression. Only statements of assignments and variable definitions with assignment can modify a variable value in a state. Statements like (++i) or (i++) are rewritten as assignment statements (e.g. i = i + 1;)
+
+
+Since loops are not supported, only \textbf{If statements} can modify path constraints in a state. The \textbf{If statement} will add its \textbf{condition} to the path constraint of each start state of its \textbf{true statement}. Likewise, the \textbf{If statement} will add the \textbf{negation of its condition} to the path constraint of each start state of its \textbf{false statement}. If the (\textbf{If statement}) has no \textbf{false statement}, it will be rewritten such that \textbf{NoOperation} statement is its \textbf{false statement} (similar to \textbf{nop} in assembly language). This is explained with the following example:
+
+\begin{lstlisting}  
+void f (int x, int y) 
+{ 
+	if(x > 0) y = x;  
+	assert (y == x);
+}
+\end{lstlisting}
+
+The above will be rewritten to be equivalent to 
+\begin{lstlisting}  
+void f (int x, int y) 
+{ 
+	if(x > 0) y = x;  
+	else NoOperation();
+	assert (y == x);
+}
+\end{lstlisting}
+
+Whenever there is a division in an expression, the symbolic execution engine would automatically add an assertion statement such that the numerator of the division is not equal to zero. The \textbf{start states} of this assertion statement would be the \textbf{start states} of the statement where the division operation resides. This explained in the following example:
+
+\begin{lstlisting}  
+void f (int x, int y) 
+{
+	x = x / y;
+}
+\end{lstlisting}
+
+The above would be rewritten to be equivalent to :
+
+\begin{lstlisting}  
+void f (int x, int y) 
+{
+	assert(y != 0);
+	x = x / y;
+}
+\end{lstlisting}
+
+
+Finally since C allows integers to be used as booleans in assertions, this would be problematical in Z3 which doesn't support that. Therefore assertions with integer expressions are written to be logical with comparison to zero as follows:
+
+\begin{lstlisting}  
+void f (int x, int y) 
+{ 	
+	assert (x+y);
+	assert (0);
+}
+\end{lstlisting}
+
+The above will be rewritten to be equivalent to 
+\begin{lstlisting}  
+void f (int x, int y) 
+{ 	
+	assert (x+y > 0);
+	assert (0 > 0);
+}
+\end{lstlisting}
 
 \section{Work Division} 
 
