@@ -294,6 +294,24 @@ void f (int x, int y)
 \end{frame}
 
 
+\begin{frame}[fragile]
+\frametitle{My approach}
+\begin{itemize}
+
+\item Unknown
+
+\begin{lstlisting}  
+void f (int x, int y, int z)  +
+{
+	assert(!((x*x*x + y*y*y == z*z*z) && 
+	(x>10) && (y>10) && (z>10)));
+};
+\end{lstlisting}
+
+
+\end{itemize}
+\end{frame}
+
 
 \begin{frame}[fragile]
 \frametitle{Work Division}
