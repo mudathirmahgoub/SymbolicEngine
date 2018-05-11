@@ -11,3 +11,5 @@ To run the jar file use the command
 ```
 java -jar SymbolicEngine.jar -i test.c
 ``` 
+
+[Z3.exe](SymbolicEngine.jar) needs to be on the same directory of SymbolicEngine.jar
