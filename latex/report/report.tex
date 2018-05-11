@@ -36,7 +36,9 @@ In this project the target code is a simple portion of the C programming languag
 Symbolic execution is mostly used in software verification for critical systems. In such systems, strong security and safety properties need to be guaranteed. Examples of security properties include an array access within its range, and the absence of division by zero. An example of a safety property for software embedded in a microwave is guaranteeing that microwave is never running while its door is open. 
 
 \subsection{Personal motivation}
+Initially my idea was to do another project. When I was answering the last question in the take home exam it was about symbolic execution and the answer needed some constraints solving using high school math. After solving only 2 formulas, it became tedious and I tried to use z3 online to solve them. That also became more tedious to write SMT-LIB formulas, so finally I decided to do this project when the first project didn't work out. As a bonus I verified my manual answer to that question using this project. So for that I am satisfied. 
 
+Another motivation is that symbolic execution is related to my research. So obviously this is supposed to be my first choice, but the first one involved reverse engineering which is really cool. Also I decided to use Z3 something different than CVC4 which I would be working on in the future. 
 \section{Challenges} 
 
 The paper \cite{paper} describes many challenges in symbolic execution that include:

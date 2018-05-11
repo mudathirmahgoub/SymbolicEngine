@@ -83,6 +83,16 @@ Counter example: {x=0, y=1}
 \end{block}
 \end{frame}
 
+
+\begin{frame}[fragile]
+\frametitle{Execution}
+\huge
+\centering
+
+Demo
+
+\end{frame}
+
 \begin{frame}[fragile]
 \frametitle{Motivation or Importance of the problem}
 \begin{block}{Importance of symbolic execution}
@@ -95,7 +105,7 @@ Counter example: {x=0, y=1}
 
 \begin{block}{Personal motivation}
 \begin{itemize}
-\item related to my research 
+\item Related to my research 
 \item A tedious question in the second midterm
 \end{itemize}
 \end{block}
@@ -161,7 +171,7 @@ Counter example: {x=0, y=1}
 \item Start with function definition
 \item Assign a new symbolic value to each argument variable
 \item Set the initial path constraint to empty (i.e. $true$)
-\item Initial \textbf{start state} = argument variables(with symbolic values) + empty constraint
+\item \textbf{Initial start state} = argument variables(with symbolic values) + empty constraint
 \item Each statement has \textbf{start states} and \textbf{end states}. A statement can't modify its \textbf{start states}
 
 \item The block of the function has one \textbf{start state} = \textbf{Initial start state}
@@ -176,7 +186,7 @@ Counter example: {x=0, y=1}
 \begin{frame}[fragile]
 \frametitle{My approach}
 \begin{itemize}
-\item An assignment statement ($variable = expression$) has \textbf{end states} exactly as \textbf{start states} except with the updated $variable$ which gets the value of the $expression$
+\item An assignment statement ($variable = expression$) has \textbf{end states} exactly as \textbf{start states} except with the updated $variable$ which gets the symbolic value of the $expression$
 
 \item A variable definition statement without assignment has \textbf{end states} exactly as \textbf{start states} except with the addition of the new variable which gets a new symbolic value
 
@@ -294,55 +304,6 @@ Since there is only one person in this project, all the work is done by him
 \frametitle{References}
 Roberto Baldoni, Emilio Coppa, Daniele Cono D’Elia, Camil Demetrescu, and Irene Finocchi.
 A survey of symbolic execution techniques. CoRR, abs/1610.00502, 2016
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Execution}
-\begin{block}{}
-\end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Execution}
-\begin{block}{}
-\end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Execution}
-\begin{block}{}
-\end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Execution}
-\begin{block}{}
-\end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Execution}
-\begin{block}{}
-\end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Execution}
-\begin{block}{}
-\end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Execution}
-\begin{block}{}
-\end{block}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\frametitle{Execution}
-\begin{block}{}
-\end{block}
 \end{frame}
 
 
