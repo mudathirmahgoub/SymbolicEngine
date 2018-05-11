@@ -14,11 +14,12 @@ public class Result
     public String toString()
     {
         StringBuilder builder = new StringBuilder();
-        builder.append("Total Answer: " + isValid.toString() + "\n");
+        builder.append("------------------\n");
+        builder.append("Overall Answer: " + isValid.toString() + "\n");
 
         for (Assertion assertion : assertions)
         {
-            builder.append("----------------\n");
+            builder.append("------------------\n");
             builder.append(assertion.toString() + "\n");
             for (AssertionFormula formula: assertion.assertionFormulas)
             {
