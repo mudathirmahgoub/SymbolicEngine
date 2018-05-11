@@ -60,6 +60,6 @@ public class Assertion extends Statement
     @Override
     public String toString()
     {
-        return "Assertions: assert(" + expression.toString() + ")";
+        return "Assertion: (" + expression.toString() + ")";
     }
 }

@@ -37,6 +37,6 @@ public class IntegerConstant extends Constant
     @Override
     public String toString()
     {
-        return "IntegerConstant: " + value ;
+        return "IntegerConstant(" + value + ")" ;
     }
 }

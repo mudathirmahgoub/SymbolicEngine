@@ -43,6 +43,6 @@ public class PlusPlusStatement extends Statement
     @Override
     public String toString()
     {
-        return "PlusPlusStatement: " + variable + "++";
+        return "PlusPlusStatement(" + variable + "++)";
     }
 }

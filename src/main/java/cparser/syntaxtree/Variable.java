@@ -41,6 +41,6 @@ public class Variable extends Expression
     @Override
     public String toString()
     {
-        return "Variable: " + name;
+        return "Variable(" + name + ")";
     }
 }

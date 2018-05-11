@@ -43,6 +43,6 @@ public class Assignment extends Statement
     @Override
     public String toString()
     {
-        return "Assignment: " + variable + " = "+ expression.toString() + ";";
+        return "Assignment: " + variable + " = "+ expression.toString();
     }
 }

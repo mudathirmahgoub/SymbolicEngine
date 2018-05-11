@@ -61,4 +61,10 @@ public class UnaryExpression extends Expression
         }
         return formula;
     }
+
+    @Override
+    public String toString()
+    {
+        return "UnaryExpression(" + unaryOperator +"(" + expression + "))";
+    }
 }

@@ -38,6 +38,6 @@ public class BooleanConstant extends  Constant
     @Override
     public String toString()
     {
-        return "BooleanConstant: " + this.value;
+        return "BooleanConstant(" + this.value + ")";
     }
 }

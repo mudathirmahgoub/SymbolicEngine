@@ -96,6 +96,6 @@ public class BinaryExpression extends Expression
     @Override
     public String toString()
     {
-        return "BinaryExpression: " + left + binaryOperator + right + ";";
+        return "BinaryExpression(" + left + " " + binaryOperator +" " + right + ")";
     }
 }
