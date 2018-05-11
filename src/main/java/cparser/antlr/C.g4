@@ -45,6 +45,8 @@ expression
             | expression '<=' expression
             | expression '!=' expression
             | expression '==' expression
+            | expression '&&' expression
+            | expression '||' expression
             | Identifier
             | Integer
             | BooleanConstant

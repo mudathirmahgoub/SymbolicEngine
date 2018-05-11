@@ -403,6 +403,7 @@ public class DemoTests
     }
 
 
+
     /**********************************************************/
 
     @Test()
@@ -436,4 +437,15 @@ public class DemoTests
         assertEquals(Answer.No, result.isValid);
     }
 
+    /**********************************************************/
+
+    @Test()
+    void unknown() throws IOException
+    {
+        String code = "void f (int x, int y, int z) " +
+                "{assert(!((x*x*x + y*y*y == z*z*z) && (x>10) && (y>10) && (z>10)));}";
+        SymbolicEngine engine = new SymbolicEngine(code);
+        Result result= engine.verify();
+        assertEquals(Answer.Unknown, result.isValid);
+    }
 }

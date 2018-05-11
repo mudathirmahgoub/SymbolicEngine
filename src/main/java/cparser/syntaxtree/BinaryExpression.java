@@ -42,6 +42,8 @@ public class BinaryExpression extends Expression
             case "<=":
             case "!=":
             case "==":
+            case "&&":
+            case "||":
                 return true;
             default:
                 throw new UnsupportedOperationException();
@@ -86,6 +88,12 @@ public class BinaryExpression extends Expression
                 break;
             case "%":
                 formula = "(mod " + leftFormula + " " + rightFormula + ")";
+                break;
+            case "&&":
+                formula = "(and " + leftFormula + " " + rightFormula + ")";
+                break;
+            case "||":
+                formula = "(or " + leftFormula + " " + rightFormula + ")";
                 break;
             default:
                 formula = "(" + binaryOperator + " " + leftFormula + " " + rightFormula + ")";
