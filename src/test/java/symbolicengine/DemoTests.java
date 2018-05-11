@@ -19,6 +19,7 @@ public class DemoTests
     public void clear()
     {
         CNode.symbolicValues.clear();
+        CNode.symbolicIndex = 0;
         SymbolicEngine.debug = true;
     }
 
