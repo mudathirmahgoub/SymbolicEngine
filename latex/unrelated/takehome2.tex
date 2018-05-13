@@ -84,14 +84,20 @@ attack. Describe the different defenses (e.g., Canary, ASLR) that can thwart the
 
 
 \color{blue}
-Buffer overflow attack is writing more data into a buffer in a way that exceeds its boundaries to cause the running software to crash or behave unexpectedly. The objective of the attacker can just be the crash itself, or  the execution to jump to an address that contains malicious code. 
-
-Canary token or a security token is a random number that is generated and stored in the stack before a function is called and should not change when the function returns. If the token is changed after the function returns, then memory corruption is detected and perhaps caused by buffer overflow. The program can then log the event and exit. Canary tokens enable detecting buffer overflow, but decrease the performance because of the security tokens management overhead.
-
-Address Space Layout Randomization is another way to defend against buffer overflow attacks which rely on fixed addresses in the stack and the heap of a program, or fixed addresses of shared libraries. ASLR avoids this by randomizing the addresses of the heap, stack and shared libraries. This address randomization makes it difficult for injected code by buffer overflow attack to execute. Since there is limited amount of memory locations, an adversary can use brute force to detect the random address.  For system libraries, the ASLR can be applied only once when the operating system starts up. The addresses remain fixed until next reboot, and if an adversary discovers the address of a system library, that address wouldn't not change until the system is rebooted. Also ASLR is not supported by older operating systems or can be disabled by the user.
+Buffer overflow attack is writing more data into a buffer in a way that exceeds its boundaries to cause the running software to crash or behave unexpectedly. The objective of the attacker can just be the crash itself, or injecting malicious code in the input and modifying the return addresses and the program counter to point to the injected code and continue execution from there. Buffer overflow is possible when unsafe functions like strcpy, strcat, etc are used without boundaries checking or buffer overflow protection. With this attack, an adversary can gain access to the victim machine and execute shell scripts. 
 
 
-In Java, buffer overflow doesn't happen with the code run by the java virtual machine, because it uses managed memory model and checks arrays accesses to be within the boundaries of the array, or throws an exception otherwise. However, the java virtual machine itself or  the use of Java native interface (JNI) may be vulnerable to buffer overflow attack. 
+The complete defense against buffer overflow attack  is bounds checking which is provided by type-safe programming languages like Java or some compilers for C and C++. Since the attacker goal is to overflow the buffer, this can't happen if the program checks the boundaries before writing elements to an array. The disadvantage of bounds checking is performance which is reduced each time an array element is accessed.
+
+
+Another defense is to have non-executable buffers. This way the malicious input can never be executed. However this restricts some performance optimizations used by the operating systems \cite{paper}.
+
+\textbf{Terminator canary }is another way to protect against stack overflow but it is not complete. Terminator canary is just a null terminator like 0, NewLine or EOF that is put into stack before the return addresses. When the attacker overwrites the return address, he has to go through the terminator canary first. If the terminator canary is changed during a function call, then buffer overflow is detected and the execution can terminate. So the attacker has to use null terminator in the input to avoid overwriting the canary in his way to change the return address. This provide protections for string operations like strcpy which exits when a null terminator is encountered. Unlike terminator canary which is known to the attacker, \textbf{random canary} token or a security token is a random number that is generated and stored in the stack before the return address. This token needs to be secret and changes each time the program is run. Although it is more secure than terminator canary, both are ineffective if the attacker only modifies the return address. 
+
+\textbf{Address Space Layout Randomization}\footnote{Information source \url{https://app.pluralsight.com/library/courses/ethical-hacking-buffer-overflow/transcript}} is another way to defend against buffer overflow attacks which rely on fixed addresses in the stack and the heap of a program, or fixed addresses of shared libraries. ASLR avoids this by randomizing the addresses of the heap, stack and shared libraries. This address randomization makes it difficult for injected code by buffer overflow attack to execute. Since there is limited amount of memory locations, an adversary can use brute force to detect the random address. For system libraries, the ASLR can be applied only once when the operating system starts up. The addresses remain fixed until next reboot, and if an adversary discovers the address of a system library, that address wouldn't not change until the system is rebooted. Also ASLR is not supported by older operating systems or can be disabled by the user.
+
+
+In Java, buffer overflow doesn't happen with the code run by the java virtual machine, because it uses managed memory model and perform bounds checking on arrays. However, the java virtual machine itself or  the use of Java native interface (JNI) may be vulnerable to buffer overflow attack. 
 
 \color{black}
 
@@ -238,5 +244,10 @@ The SMT solver would return the input $x = 6, y = 3$ which hits the bug.
 
 \end{enumerate}
 \end{enumerate}
+
+
+\bibliographystyle{plain}
+
+\bibliography{references}
 
 \end{document}
